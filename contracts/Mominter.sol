@@ -16,15 +16,16 @@ contract Mominter is ERC721URIStorage {
     // address owner;
     uint256 private monthly_value;
     address private owner;
-    uint commision =  0.1 ether;
+    uint commission =  0.1 ether;
+    uint tip =  1 ether;
     mapping(address => bool) accounts;
     mapping(uint256 => StorageItem) private idToStorageItem;
     mapping(uint256 => ViewItem) private idToViewItem;
 
     struct StorageItem {
         uint256 tokenId;
-        address owner;
-        address storageDrive;
+        address payable owner;
+        address payable storageDrive;
         uint256 dateCreated;
         bool shared;
     }
@@ -82,8 +83,8 @@ contract Mominter is ERC721URIStorage {
     function createStorageItem(uint256 tokenId) private {
         idToStorageItem[tokenId] = StorageItem(
             tokenId,
-            msg.sender,
-            address(this),
+            payable(msg.sender),
+            payable(address(this)),
             block.timestamp,
             false
         );
@@ -106,21 +107,28 @@ contract Mominter is ERC721URIStorage {
         emit ViewItemCreated(newViewId, tokenId, msg.sender);
     }
 
+        function conBalance() public view returns (uint256){
+            return address(this).balance;
+    }
+
+
 // tip moment creator
     function tipCreator(uint256 tokenId) public payable { 
         _tipIds.increment();
-      require(msg.value > 0, "Tip must be at least 1 wei");
+      // require(msg.value > 0, "Tip must be at least 1 wei");
         console.log(msg.value);
       address creator = idToStorageItem[tokenId].owner;
-      address storageDrive = idToStorageItem[tokenId].storageDrive;
-      uint256 commission =  msg.value;
+      address manager = idToStorageItem[tokenId].storageDrive;
        console.log(commission);
-      uint256 tip =  msg.value;
+      uint256 tip2 =  msg.value;
        console.log(tip);
-      payable(storageDrive).transfer(commission);
-      payable(creator).transfer(tip);
+       console.log(tip2);
+      payable(manager).transfer(commission);
+      payable(creator).transfer(tip2);
+      uint256 bal= address(this).balance;
+      console.log(bal);
 
-        emit TipCreated(_tipIds.current(), tokenId, msg.sender, tip, commision );
+        emit TipCreated(_tipIds.current(), tokenId, msg.sender, tip2, commission );
     }
 
     /* Returns all files on drive */

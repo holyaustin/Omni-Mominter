@@ -105,7 +105,7 @@ export default function ViewFiles() {
       <Image
         src={blenderPoster}
         layout="fill"
-        objectFit="cover"
+        objectfit="cover"
         priority
         placeholder="blur"
       />
@@ -123,12 +123,12 @@ export default function ViewFiles() {
   return (
     <Box as="section"  sx={styles.section}>
       <div className="bg-blue-100 text-xl text-center text-black font-bold pt-5 pb-4">
-        <h1> Video on Demand Gallery</h1>
+        <h1> Moments Video Gallery</h1>
       </div>
     <div className="flex justify-center bg-blue-100 mb-12">
 
       <div className="px-4" style={{ maxWidth: "1600px" }}>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 pt-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-2">
           {nfts.map((nft, i) => (
 
             <div key={i} className="shadow rounded-xl overflow-hidden border-2 border-white-500">
@@ -138,7 +138,7 @@ export default function ViewFiles() {
                 height="auto"
                 width="100%"
                 objectfit="cover"
-                src={`${nft.image}#toolbar=0&embedded=true`}
+                src={`${nft.image}#toolbar=0&embedded=true&controls=0&mute=1`}
                 className="py-3 object-cover h-500"
               />
               <div className="p-1">

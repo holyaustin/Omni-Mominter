@@ -69,7 +69,7 @@ export default function Header() {
           <a>Explore-Marketplace</a>
           </Link>
           <Link href="/publish">
-          <a>Publish-Moment</a>
+          <a>Create-Moment</a>
           </Link>
           <Link href="/encrypt">
           <a> Encrypt-Upload</a>

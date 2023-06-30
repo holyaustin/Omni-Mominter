@@ -27,7 +27,7 @@ const Banner = () => {
             <Heading className="text-center text-blue-500"> MoMinter</Heading>
             <div style={{fontSize: '24px', marginRight: '0.5rem', fontWeight: 'bold'}} className="text-justify">
               <p>
-              Decentralized Video Moment Minting and Sharing Platform. Where you can explore video Moments on Demand (VOD) and share them with friends and loved ones. Mint Part of your Video meetings as NFTs. Want to try it Out, Mint this Access NFT!
+              Mominter is a web3 video project with the aim of helping creators publish exciting video Moments as NFTs  and share them easily while owning their content and possibly making money from tips.
               </p>
               <br />
             </div>

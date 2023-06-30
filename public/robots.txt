@@ -3,7 +3,7 @@ User-agent: *
 Allow: /
 
 # Host
-Host: https://stremagenic.vercel.app
+Host: https://momimter.vercel.app
 
 # Sitemaps
-Sitemap: https://stremagenic.vercel.app/sitemap.xml
+Sitemap: https://momimter.vercel.app/sitemap.xml

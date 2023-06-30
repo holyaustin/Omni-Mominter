@@ -3,7 +3,7 @@
 
 import React, { useEffect, useState } from "react";
 import { jsx, Box } from 'theme-ui';
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import axios from "axios";
 import { useRouter } from 'next/router'
 import { useNavigate, useLocation } from "react-router-dom";
@@ -16,8 +16,8 @@ import Popup from 'reactjs-popup';
 //import 'reactjs-popup/dist/index.css';
 
 import blenderPoster from '../../public/images/mominter_logo.png';
-import fileNFT from "../../artifacts/contracts/Genic.sol/FileNFT.json";
-import { fileShareAddress } from "../../config";
+import fileNFT from "../../artifacts/contracts/Mominter.sol/Mominter.json";
+import { MominterAddress } from "../../config";
 
 const containerStyle = {
   position: "relative",
@@ -37,6 +37,7 @@ const responsiveIframe = {
 
 export default function Watching() {
   console.log('Entered watching component');
+  const [formInput, updateFormInput] = useState({ tipamount: '' })
   const router = useRouter();
   const [errorMessage, setErrorMessage] = useState(null);
   const [nfts, setNfts] = useState([]);
@@ -46,7 +47,7 @@ export default function Watching() {
   useEffect(() => {
     // eslint-disable-next-line no-use-before-define
     loadVideo();
-    loadCount();
+    //loadCount();
     console.log("Counter executed")
   }, []);
 
@@ -65,10 +66,37 @@ export default function Watching() {
     router.push("/dashboardLive");
   }
   async function Claim() {
-    alert("This feature is under development because we want to give you the best expereince");
+    const { tipamount } = formInput;
+    if (!tipamount) { 
+      alert("Please enter a valid tip amount")
+      return;
+    };
+    updateFormInput(tipamount);
+
+    const web3Modal = new Web3Modal();
+    const connection = await web3Modal.connect();
+    const provider = new ethers.providers.Web3Provider(connection);
+    const signer = provider.getSigner();
+
+    // get tip amount
+
+  const decimals = 18;
+    //const tip = tipamount
+    const tip = "1000000000000000000";
+    console.log("Tip is ", tip);
+    const amount = ethers.utils.parseUnits(tip)
+    // const amount = BigNumber.from(tip).mul(BigNumber.from(10).pow(decimals));
+    console.log("Amount is ", amount);
+    const contract = new ethers.Contract(MominterAddress, fileNFT.abi, signer);
+    const videoid = props.vid;
+    console.log("videoid is ", videoid);
+    
+    const transaction= await contract.tipCreator(videoid, { value: tip } );
+    await transaction.wait();
+
   }
 
-  const rpcUrl = "https://filecoin-hyperspace.chainstacklabs.com/rpc/v1";
+  const rpcUrl = "https://rpc.ankr.com/zetachain_evm_testnet";
    // const rpcUrl = "localhost";
 
    const { query: vid } = router; 
@@ -88,8 +116,9 @@ export default function Watching() {
     const connection = await web3Modal.connect();
     const provider = new ethers.providers.Web3Provider(connection);
     const signer = provider.getSigner();
-    const contract = new ethers.Contract(fileShareAddress, fileNFT.abi, signer);
+    const contract = new ethers.Contract(MominterAddress, fileNFT.abi, signer);
     const data = await contract.fetchOneNews(vid);
+    console.log(" data mapping is ", data);
     const data2 = await contract.fetchViews(vid);
 
     /*
@@ -135,7 +164,7 @@ export default function Watching() {
 
   async function loadCount() {
     /* create a generic provider and query for items */
-      console.log("loading News for item", props.vid);
+      console.log("loading Moments for item", props.vid);
     const vid = props.vid;
     console.log("vid is ", vid);
 
@@ -144,7 +173,7 @@ export default function Watching() {
       const web3Modal = new Web3Modal();
       const connection = await web3Modal.connect();
       const provider = new ethers.providers.Web3Provider(connection);
-      const connectedContract = new ethers.Contract(fileShareAddress, fileNFT.abi, provider.getSigner());
+      const connectedContract = new ethers.Contract(MominterAddress, fileNFT.abi, provider.getSigner());
       console.log("Count variable is ", vid);
 
       const mintNFTTx = await connectedContract.createViewItem(vid);
@@ -163,7 +192,7 @@ export default function Watching() {
       <Image
         src={blenderPoster}
         layout="fill"
-        objectFit="cover"
+        objectfit="cover"
         priority
         placeholder="blur"
       />
@@ -192,26 +221,13 @@ export default function Watching() {
   <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-1 gap-4 pt-4">
 {nfts.map((nft, i) => (
     <div key={i} className="shadow rounded-xl overflow-hidden min-w-full " style={responsiveIframe}>
-{/**
-<Player
-      title={nft.name}
-      src={nft.sharelink}
-      //playbackId="6d7el73r1y12chxr"
-      autoUrlUpload={{ fallback: false, ipfsGateway: 'https://w3s.link' }}
-      poster={<PosterImage />}
-      showPipButton
-      objectFit="cover"
-      priority
-
-    />
- */}
       
       <iframe
         title={nft.name}
         style={responsiveIframe}
         src={`${nft.sharelink}#toolbar=0`}
         className="py-3 object-cover h-full"
-        objectFit="cover"
+        objectfit="cover"
       />
  
     </div>
@@ -250,7 +266,7 @@ export default function Watching() {
       </div>
       <br/>
       <div className="p-1">
-        <p style={{ height: "20px" }} className="text-xl font-semibold">Publisher: {nft.owner}</p>
+        <p style={{ height: "20px" }} className="text-xl font-semibold">Creator: {nft.owner}</p>
       </div>
       <br/>
       <div className="p-1 mb-5">
@@ -264,33 +280,38 @@ export default function Watching() {
    </div>
 
   
-		<div className="col-span-3 text-white pt-3  text-xl flex items-center justify-center">
-    <div className="p-4">
-                  <button type="button" className="w-full bg-blue-800 text-white font-bold py-2 px-12 border-b-4 border-blue-200 hover:border-blue-500 rounded-full" onClick={() => Claim()}>Drop your comment</button>
-                </div>
+		<div className=" col-span-3 text-white pt-3  text-xl flex items-center justify-center sm:row-span-3">
+            <div className="p-4 flex">
+      <input
+          placeholder="Tip Amount in ZETA"
+          className=" border rounded p-2 mr-2 w-4/5 text-center text-black  font-bold"
+          onChange={e => updateFormInput({ ...formInput, tipamount: e.target.value })}
+        />
+                  <button type="button" className="w-full bg-blue-800 text-white font-bold py-4 px-12 border-b-4 border-blue-200 hover:border-blue-500 rounded-full" onClick={() => Claim()}>Tip the Creator</button>
+      </div>
                 <div className="p-4">
-                  <button type="button" className="w-full bg-blue-800 text-white font-bold py-2 px-12 border-b-4 border-blue-200 hover:border-blue-500 rounded-full">
+                  <button type="button" className="w-full bg-blue-800 text-white font-bold py-4 px-12 border-b-4 border-blue-200 hover:border-blue-500 rounded-full">
                     <a
                       className="social-icon-link github"
                       href="https://web3chat-holyaustin.vercel.app/"
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label="chat"
-                    >Chat with Publisher 
+                    >Chat with Creator 
                     </a>
                   </button>
                 </div>
                 <div className="p-4">
                 <ShareLink link="https://mominter.vercel.app/explore" text="News on Demand from eye witness all around the globe!" hashtags="blockchaintechnology Mominter huddle01 holyaustin IPFS Lighthouse">
               {(link) => (
-                  <button type="button" className="w-full bg-blue-800 text-white font-bold py-2 px-12 border-b-4 border-blue-200 hover:border-blue-500 rounded-full">                   
+                  <button type="button" className="w-full bg-blue-800 text-white font-bold py-4 px-12 border-b-4 border-blue-200 hover:border-blue-500 rounded-full">                   
                   <a href={link} target="_blank" rel="noreferrer">Share on Twitter</a></button>
                   )}
             </ShareLink>
                 </div>
 
                 <div className="p-4">
-                  <button type="button" className="w-full bg-blue-800 text-white font-bold py-2 px-12 border-b-4 border-blue-200 hover:border-blue-500 rounded-full">
+                  <button type="button" className="w-full bg-blue-800 text-white font-bold py-4 px-12 border-b-4 border-blue-200 hover:border-blue-500 rounded-full">
                     <a
                       className="social-icon-link github"
                       href=""
