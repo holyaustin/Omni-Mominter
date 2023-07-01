@@ -2,21 +2,6 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/Videoconference": "pages/Videoconference.html",
-  "/api/asset/[getAsset]": "pages/api/asset/[getAsset].js",
-  "/api/createStream": "pages/api/createStream.js",
-  "/api/delete": "pages/api/delete.js",
-  "/api/getUploadURL": "pages/api/getUploadURL.js",
-  "/api/mint": "pages/api/mint.js",
-  "/api/session/[getSession]": "pages/api/session/[getSession].js",
-  "/api/sessions/[getSessions]": "pages/api/sessions/[getSessions].js",
-  "/api/stream/[getStream]": "pages/api/stream/[getStream].js",
-  "/api/update": "pages/api/update.js",
-  "/api/uploadForm": "pages/api/uploadForm.js",
-  "/encrypt": "pages/encrypt.html",
-  "/explore": "pages/explore.html",
-  "/": "pages/index.html",
-  "/publish": "pages/publish.html",
-  "/watch": "pages/watch.html",
-  "/404": "pages/404.html"
+  "/explore": "pages/explore.js",
+  "/": "pages/index.js"
 }

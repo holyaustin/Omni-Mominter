@@ -1,7 +1,5 @@
 # Mominter : : Decentralized Video Moment Minter for Zeta Chain
 
-A DApp to allow the user(host) to mint moments as NFT using the contracts deployed on Mantle Hyperscale performance. On Mantle chain, we experience high throughput with unrivaled security with Ethereum's roll-up technology.
-
 ![Mominter](https://bafkreibsvdrhg4xrmdeujrz33smda7rziayuzpxb5cggcp4o5633sn4c2a.ipfs.nftstorage.link/)
 
 ## Introduction
@@ -26,14 +24,15 @@ The smart contract uses ERC-721 specification to hold metadata URI, ethers.js wa
 
 ## Live DApp hosted on
 
-Live Dapp on Vercel: - <https://omni-mominter.vercel.app//>
+Live Dapp on Vercel: - <https://omni-mominter.vercel.app/>
 
-Deployed to Polygon Chain:
-  Mantle Testnet deployed Address = "0x085446624cA30579532B12B7EAeD211B1E6Ac1de"
+EXplorer of Deployed contract to Zeta Chain:
+  
+  <https://explorer.athens.zetachain.com/address/0xf25b0cbca90ac97e3037488bb64f0e0d9d706597>
 
-  <https://explorer.testnet.mantle.xyz/address/0x085446624cA30579532B12B7EAeD211B1E6Ac1de>
+  <https://explorer.athens.zetachain.com/address/0xa6d6f4556b022c0c7051d62e071c0acece5a1228>
 
- Youtube video link: <https://youtu.be/toU1nyQoyuo> (https://youtu.be/toU1nyQoyuo)
+ Youtube video link: <https://youtu.be/toU1nyQoyuo> (<https://youtu.be/toU1nyQoyuo>)
 
 # Template for a ZetaChain Hardhat Project
 

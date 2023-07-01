@@ -8,7 +8,5 @@ typechain-types
 
 # Hardhat files
 cache
-artifacts
-
 access_token
 
